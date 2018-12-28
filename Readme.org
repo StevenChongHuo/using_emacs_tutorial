@@ -15,4 +15,4 @@
   - review init.el
   - set up Readme.org
 * Links
-  - [[http://cestlaz.github.io][Here my Blog]]
+  - [[http://cestlaz.github.io][Check this blog to learn more!]]
