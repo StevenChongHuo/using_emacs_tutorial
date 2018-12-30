@@ -1,0 +1,27 @@
+;;; -*- coding: utf-8 -*-
+
+;; ----- ido-last-directory-list -----
+(
+ ("/Users/alaadahmed/" . ".emacs.d/")
+)
+
+;; ----- ido-work-directory-list -----
+(
+ "/Users/alaadahmed/.emacs.d/"
+)
+
+;; ----- ido-work-file-list -----
+(
+ "Readme.org"
+ "init.el"
+)
+
+;; ----- ido-dir-file-cache -----
+(
+ ("/Users/alaadahmed/.emacs.d/" (23592 20758 950118 99000) ".git/" "Readme.org" "elpa/" ".gitignore" "init.el" "auto-save-list/" "init.el~" "../" "./")
+
+ ("/Users/alaadahmed/" (23589 33833 965906 668000) ".composer/" ".aliases" ".viminfo" ".bash_history" ".gitconfig" ".cache/" "Downloads/" ".oh-my-zsh/" ".gem/" ".pry_history" ".ctags" ".m2/" ".spacemacs" ".yadm/" ".vsts/" ".vscode/" ".mono/" ".mysql_history" "Documents/" ".npm/" ".zcompdump" ".jupyter/" ".global_ignore" ".Trash/" "Dropbox/" ".profile" "Applications/" ".vimrc" "Movies/" "Applications (Parallels)/" ".ssh/" ".rustup/" ".emacs.d.2018-12-27/" ".cask/" "test.exs" "DesktopApps/" ".hyper_plugins/" ".ideavimrc" ".dropbox/" ".fzf.bash" "Public/" "PycharmProjects/" ".fzf.zsh" ".ms_openjdk_config" "Google Drive/" ".bash_sessions/" "mahmoud_hanafi.txt" "Sites/" "alaadahmed@gmail.com Creative Cloud Files/" ".android/" ".cargo/" ".node_repl_history" ".nuuid.ini" ".emacs.d/" "mbox" ".VSCodeVim/" ".IdentityService/" ".zcompdump-alaambp.local-5.6.2" "Parallels/" ".emulator_console_auth_token" "RiderProjects/" ".oracle_jre_usage/" ".gphoto/" ".erlang.cookie" ".lesshst" ".electron/" "Library/" "Desktop/" ".zsh_history" ".asdf/" ".tags_cache/" "Samsung/" ".nuget/" ".bundle/" ".zprofile" ".atom/" ".multirust/" ".pylint.d/" "Pictures/" "Projects/" "Creative Cloud Files/" ".psql_history" ".NERDTreeBookmarks" ".local/" "OneDrive/" ".templateengine/" ".mix/" ".elm/" ".ServiceHub/" ".zshrc" ".zshrc.pre-oh-my-zsh" ".bashrc" ".subversion/" ".netrc" ".rbenv/" ".z" "python-virtual-environments/" ".CFUserTextEncoding" ".yarnrc" ".DS_Store" ".vim/" ".node-gyp/" "Databases/" ".gemrc" ".odoorc" "bashscript" ".julia/" "Music/" ".config/" ".hex/" "../" "./")
+)
+
+;; ----- ido-unc-hosts-cache -----
+t
