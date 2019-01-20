@@ -2,11 +2,66 @@
 
 * Interface Tweaks
 #+BEGIN_SRC emacs-lisp
-(setq inhibit-startup-message t)
-(tool-bar-mode -1)
-(fset 'yes-or-no-p 'y-or-n-p)
-(global-set-key (kbd "<f5>") 'revert-buffer)
+  (setq inhibit-startup-message t)
+					  ;  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+  (blink-cursor-mode -1)
+  (fset 'yes-or-no-p 'y-or-n-p)
+  (setq confirm-kill-processes nil)
+  (global-set-key (kbd "<f5>") 'revert-buffer)
+  (desktop-save-mode t)
+  (save-place-mode t)
+
+  ;; Make scrolling softer and make courser not to jump when page finish and scrolling will take you to next page, it will scroll line by line.
+  (setq mouse-wheel-scroll-amount '(1))
+  (setq mouse-wheel-progressive-speed nil)
+  (setq scroll-conservatively 101)
+
+  ;; Remember last windows opened and reopen again with pressing C-c ←
+  (winner-mode t)
+
+  ;; Enable column number mode:
+  (column-number-mode t)
 #+END_SRC
+
+* Font "Name&Size&Defaults"
+  #+BEGIN_SRC emacs-lisp
+    (setq my/font-name "Liga Nerd Font Mono")
+    (defcustom my/font-size 16 "My default font size")
+    (defun set-frame-font-size (&optional font-size)
+      "Change frame font size to FONT-SIZE.
+	If no FONT-SIZE provided, reset the font size to its default variable."
+      (let ((font-size
+	     (or font-size
+		 (car (get 'my/font-size 'standard-value)))))
+	(customize-set-variable 'my/font-size font-size)
+	(set-frame-font
+	 (format "%s %d" my/font-name font-size) nil t)))
+
+    (defun increase-frame-font ()
+      "Increase frame font by one."
+      (interactive)
+      (set-frame-font-size (+ my/font-size 1)))
+
+    (defun decreease-frame-font ()
+      "Decrease frame font by one."
+      (interactive)
+      (set-frame-font-size (- my/font-size 1)))
+
+    (defun reset-frame-font ()
+      "Reset frame font to its default value."
+      (interactive)
+      (set-frame-font-size))
+
+    (add-hook 'after-init-hook 'reset-frame-font)
+  #+END_SRC
+
+* Security
+  #+BEGIN_SRC emacs-lisp
+    (setq gnutls-verify-error t)
+    (setq tls-checktrust t)
+  #+END_SRC
 
 * try
 #+BEGIN_SRC emacs-lisp
@@ -17,24 +72,66 @@
 * which key
   Brings up some help
   #+BEGIN_SRC emacs-lisp
-  (use-package which-key
-        :ensure t
-	:config (which-key-mode))
+    (use-package which-key
+      :ensure t
+      :config (which-key-mode))
+  #+END_SRC
+  I don't wait for `which-key` popup for long time.
+  #+BEGIN_SRC emacs-lisp
+    (setq echo-keystrokes 0.5)
   #+END_SRC
 
+* Package Manager Straight
+  #+BEGIN_SRC emacs-lisp
+    (setq straight-use-package-by-default t)
+    (defvar bootstrap-version)
+    (let ((bootstrap-file
+	   (expand-file-name  "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+	  (bootstrap-version 5))
+      (unless (file-exists-p bootstrap-file)
+	(with-current-buffer
+	    (url-retrieve-synchronously
+	     "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+	     'silent 'inhibit-cookies)
+	  (goto-char (point-max))
+	  (eval-print-last-sexp)))
+      (load bootstrap-file nil 'nomessage))
+
+    ;; use-package
+    (straight-use-package 'use-package)
+  #+END_SRC
+
+* Paradox
+  Used to manage packages, list them using filtering, update them and so on.
+  #+BEGIN_SRC emacs-lisp
+    (require 'paradox)
+    (paradox-enable)
+  #+END_SRC
 
 * Org mode
 #+BEGIN_SRC emacs-lisp
-(use-package org-bullets
-  :ensure t
-  :config
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+  (use-package org-bullets
+    :ensure t
+    :config
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
-(setq indo-enable-flex-matching t)
-(setq ido-everywhere t)
-(ido-mode 1)
+  (setq indo-enable-flex-matching t)
+  (setq ido-everywhere t)
+  (ido-mode 1)
 
-(defalias 'list-buffers 'ibuffer)
+  (defalias 'list-buffers 'ibuffer)
+
+  (global-set-key (kbd "C-c c") 'org-capture)
+
+  (setq org-capture-templates
+	'(("a" "Appointment" entry (file+headline "~/Dropbox/orgfiles/gcal.org" "Appointments")
+	   "* TODO %?\n:PROPERTIES:\n\n:END:\nDEADLINE: %^T \n %i\n")
+	  ("n" "Note" entry (file+headline "~/Dropbox/orgfiles/notes.org" "Notes")
+	   "* Note %?\n%T")
+	  ("l" "Link" entry (file+headline "~/Dropbox/orgfiles/links.org" "Links")
+	   "* %? %^L %^g \n%T" :prepend t)
+	  ("t" "To Do Item" entry (file+headline "~/Dropbox/orgfiles/i.org" "To Do Items")
+	   "* %?\n%T" :prepend t)))
 #+END_SRC
 
 * Ace windows for easy window switching
@@ -84,10 +181,7 @@ when you click on "C-x o" and you have many windows opened, it will number them 
       ))
 #+END_SRC
 
-#+RESULTS:
-: counsel-find-file
-
-* Avy - navigate by searching for a letter on the screen and jumping to it
+* Avy - navigate by searching for letter and jumping to it.
 #+BEGIN_SRC emacs-lisp
 (use-package avy
   :ensure t
@@ -105,31 +199,6 @@ when you click on "C-x o" and you have many windows opened, it will number them 
     ))
 #+END_SRC
 
-* Themes
-#+BEGIN_SRC emacs-lisp
-  (use-package color-theme
-    :ensure t)
-
-  (use-package zenburn-theme
-    :ensure t
-    :config (load-theme 'zenburn t))
-
-  ;(load-theme 'leuven t)
-  (load-theme 'deeper-blue t)
-#+END_SRC
-
-#+RESULTS:
-: t
-* Flycheck
-  #+BEGIN_SRC emacs-lisp
-    (use-package flycheck
-      :ensure t
-      :init
-      (global-flycheck-mode t))
-
-  #+END_SRC
-
-  #+RESULTS:
 * Undo Tree
   #+BEGIN_SRC emacs-lisp
     (use-package undo-tree
@@ -137,11 +206,9 @@ when you click on "C-x o" and you have many windows opened, it will number them 
       :init
       (global-undo-tree-mode))
   #+END_SRC
+
 * Misc packages
   #+BEGIN_SRC emacs-lisp
-    ;Put highlight on the current line whereis courser.
-    (global-hl-line-mode t)
-
     ;beacon is to make some animated highlight to show where is your courser now.
     (use-package beacon
       :ensure t
@@ -173,9 +240,6 @@ when you click on "C-x o" and you have many windows opened, it will number them 
     (global-set-key (kbd "C-c j") 'goto-line)
   #+END_SRC
 
-#+RESULTS:
-: goto-line
-
 * Load other files
   #+BEGIN_SRC emacs-lisp
     (defun load-if-exists (f)
@@ -184,5 +248,40 @@ when you click on "C-x o" and you have many windows opened, it will number them 
 	  (load-file f)))
   #+END_SRC
 
-  #+RESULTS:
-  : load-if-exists
+* Evil Mode 
+  #+BEGIN_SRC emacs-lisp
+	
+  #+END_SRC
+
+* Web Mode
+  #+BEGIN_SRC emacs-lisp
+    (use-package web-mode
+      :ensure t
+      :config
+      (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+      (setq web-mode-engines-alist
+	    '(("django" . "\\.html\\'")))
+      (setq web-mode-ac-sources-alist
+	    '(("css" . (ac-source-css-property))
+	      ("html" . (ac-source-words-in-buffer ac-source-abbrev))))
+      (setq web-mode-enable-auto-closing t))
+  #+END_SRC
+
+* Loading Config Files [[file:config/ohotnik.el][Config Directory]]
+  #+BEGIN_SRC emacs-lisp
+    (dolist
+	(file
+	 (directory-files
+	  (concat (expand-file-name user-emacs-directory) "config")
+	  t
+	  "^.[^#].+el$"))
+      (load file))
+  #+END_SRC
+
+* Smart Parentheses
+  #+BEGIN_SRC emacs-lisp
+    (use-package smartparens
+      :config
+      (require 'smartparens-config)
+      (smartparens-global-mode))
+  #+END_SRC
